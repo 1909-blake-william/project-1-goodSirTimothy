@@ -7,16 +7,17 @@ import models.Reimbursement;
 
 public interface AdminReimbursementDao {
 	/************************************************
-	 * 	User get requests							*
+	 * User get requests *
 	 ***********************************************/
 	/**
+	 * SQL queries for display all reimbursements.
 	 * 
 	 * @param userId
 	 * @param admin
 	 * @return
 	 */
-	List<Reimbursement> getReimbursementsById(int userId, String admin);
-	
+	List<Reimbursement> getReimbursementsAll(String admin);
+
 	/**
 	 * 
 	 * @param status
@@ -24,11 +25,43 @@ public interface AdminReimbursementDao {
 	 * @param admin
 	 * @return
 	 */
-	List<Reimbursement> getReimbursementsByStatus(String status, int userId, String admin);
-	
+	List<Reimbursement> getReimbursementsByStatus(String status, String admin);
+
+	/**
+	 * 
+	 * @param status
+	 * @param admin
+	 * @return
+	 */
+	List<Reimbursement> getReimbursementsByEmployeeId(String status, String admin);
+
+	/**
+	 * 
+	 * @param date
+	 * @param admin
+	 * @return
+	 */
+	List<Reimbursement> getReimbursementsByDate(Timestamp date, String admin);
+
+	/**
+	 * 
+	 * @param date
+	 * @param admin
+	 * @return
+	 */
+	List<Reimbursement> getReimbursementsBetweenDate(Timestamp date, String admin);
 
 	/************************************************
-	 * 	User update requests							*
+	 * User update requests *
 	 ***********************************************/
-	boolean updateReimbursements(int id, Timestamp resolved, int resolver, int statusId);
+	/**
+	 * 
+	 * @param id
+	 * @param resolved
+	 * @param resolver
+	 * @param statusId
+	 * @param admin
+	 * @return
+	 */
+	boolean updateReimbursements(int id, Timestamp resolved, int resolver, int statusId, String admin);
 }
