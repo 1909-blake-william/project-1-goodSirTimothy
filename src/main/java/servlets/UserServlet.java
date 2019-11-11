@@ -36,23 +36,21 @@ public class UserServlet extends HttpServlet{
 		System.out.println("request recived with uri: " + req.getRequestURI());
 		// resp.getWriter().write("Hello from users servlet");
 		
-		// User user;
+		User user;
 
 		String username = req.getParameter("username");
-		System.out.println(username);
-		boolean test = false;
+		String password = req.getParameter("password");
 
 		if (username != null) { // find by trainer name
-			 test = userDao.findUsername(username);
+			 user = userDao.findUserByUsernameAndPassword(username, password);
 		} else { // find all
-			test = false;
+			user = null;
 		}
 
-		//ObjectMapper om = new ObjectMapper();
-		//String json = om.writeValueAsString("was the user found: " + test);
-		String json = "was the user found: " + test;
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(user);
 
-		// resp.addHeader("content-type", "application/json");
+		resp.addHeader("content-type", "application/json");
 		resp.getWriter().write(json);
 	}
 }

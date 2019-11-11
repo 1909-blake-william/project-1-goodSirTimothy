@@ -19,5 +19,6 @@ public interface UserDao {
 	 */
 	User findUserByUsernameAndPassword(String username, String password);
 	
+	User currentUser();
 	
 }
