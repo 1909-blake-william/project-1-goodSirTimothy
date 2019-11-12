@@ -47,4 +47,17 @@ public class LoginServlet extends HttpServlet {
 			}
 		}
 	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("test");
+		if ("/Project1/auth/session-user".equals(req.getRequestURI())) {
+			ObjectMapper om = new ObjectMapper();
+			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
+			System.out.println(json);
+			resp.getWriter().write(json);
+		} else {
+			System.out.println("failed");
+		}
+	}
 }
