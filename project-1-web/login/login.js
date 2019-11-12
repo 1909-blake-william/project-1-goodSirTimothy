@@ -1,12 +1,30 @@
 function submitInformation(){
-    let username = document.getElementById('username');
-    let password = document.getElementById('password');
-    console.log(username.value + ', ' + password.value);
-    // fetch('http://api.icndb.com/jokes/random?limitTo=[nerdy]')
-    //     .then(resp => resp.json())
-    //     .then(data => {
-    //         document.getElementById('chuck-norris-joke').innerText = data.value.joke;
-    //         console.log(data);
-    //     })
-    //     .catch(console.log);
+    const user = getUserFromInputs();
+    console.log(user);
+    fetch('http://localhost:8080/Project1/auth/login', {
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        //window.location.replace('reimbursements.html')
+        console.log(data);
+    })
+    .catch(err => console.log(err));
+}
+
+function getUserFromInputs(){
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+
+    const user = {
+        username: username,
+        password: password
+    }
+
+    return user
 }

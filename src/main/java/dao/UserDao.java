@@ -17,7 +17,7 @@ public interface UserDao {
 	 * @param password = the password inputed
 	 * @return return a User object if the user is found. Else, return null.
 	 */
-	User findUserByUsernameAndPassword(String username, String password);
+	User findByUsernameAndPassword(String username, String password);
 	
 	User currentUser();
 	

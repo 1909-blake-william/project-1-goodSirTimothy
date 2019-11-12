@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public User findUserByUsernameAndPassword(String username, String password) {
+	public User findByUsernameAndPassword(String username, String password) {
 		try (Connection conn = connectionUtil.getConnection()){
 			String sql = "SELECT * FROM ers_users u "
 					+ "LEFT JOIN ers_user_roles r ON (u.user_role_id = r.ers_user_role_id) "
