@@ -1,38 +1,11 @@
 let currentUser = undefined;
 
 function newReimbursement(){
-    fetch('http://localhost:8080/Project1/auth/login', {
-        credentials: 'include'
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.role === 'MANAGER'){
-            
-        } else {
-            window.location.replace('employee.html');
-        }
-    })
-    .catch(err => console.log(err));
+    window.location.replace('newReimbursement.html');
 }
 
 function viewReimbursement(){
-    fetch('http://localhost:8080/Project1/auth/login', {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify(user),
-        headers: {
-            'content-type': 'application/json'
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.role === 'MANAGER'){
-            
-        } else {
-            window.location.replace('employee.html');
-        }
-    })
-    .catch(err => console.log(err));
+    window.location.replace('viewReimbursement.html');
 }
 
 function getCurrentUserInfo() {
