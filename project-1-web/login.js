@@ -11,8 +11,11 @@ function submitInformation(){
     })
     .then(res => res.json())
     .then(data => {
-        //window.location.replace('reimbursements.html')
-        console.log(data);
+        if(data.role === 'MANAGER'){
+            
+        } else {
+            window.location.replace('employee.html');
+        }
     })
     .catch(err => console.log(err));
 }

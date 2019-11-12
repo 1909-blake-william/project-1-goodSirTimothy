@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// System.out.println("uri = " + req.getRequestURI());
-		if ("/Project1/login".equals(req.getRequestURI())) {
+		if ("/Project1/auth/login".equals(req.getRequestURI())) {
 			ObjectMapper om = new ObjectMapper();
 			User credentials = (User) om.readValue(req.getReader(), User.class);
 			User loggedInUser = userDao.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
@@ -39,6 +39,7 @@ public class LoginServlet extends HttpServlet {
 				resp.setStatus(401); // Unauthorized status code
 				return;
 			} else {
+				System.out.println(loggedInUser);
 				resp.setStatus(201);
 				req.getSession().setAttribute("user", loggedInUser);
 				resp.getWriter().write(om.writeValueAsString(loggedInUser));

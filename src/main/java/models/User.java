@@ -7,14 +7,14 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String roleId;
+	private String role;
 	
 	public User() {
 		super();
 	}
 
 	public User(int userId, String username, String password, String firstName, String lastName, String email,
-			String roleId) {
+			String role) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -22,7 +22,7 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.roleId = roleId;
+		this.role = role;
 	}
 
 	public int getUserId() {
@@ -73,12 +73,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getRoleId() {
-		return roleId;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class User {
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((roleId == null) ? 0 : roleId.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		result = prime * result + userId;
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -124,10 +124,10 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (roleId == null) {
-			if (other.roleId != null)
+		if (role == null) {
+			if (other.role != null)
 				return false;
-		} else if (!roleId.equals(other.roleId))
+		} else if (!role.equals(other.role))
 			return false;
 		if (userId != other.userId)
 			return false;
@@ -142,7 +142,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email + ", roleId=" + roleId + "]";
+				+ firstName + ", lastName=" + lastName + ", email=" + email + ", role=" + role + "]";
 	}
 	
 	
