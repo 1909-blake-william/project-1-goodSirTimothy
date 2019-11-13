@@ -1,16 +1,16 @@
 let currentUser = undefined;
 
 function newReimbursement(){
-    window.location = ('newReimbursement.html');
+    window.location = ('/Project1/client/newReimbursement/newReimbursement.html');
 }
 
 function viewReimbursement(){
-    window.location = ('viewReimbursement.html');
+    window.location = ('/Project1/client/viewReimbursement/viewReimbursement.html');
 }
 
 function logout(){
     alert('logout');
-    window.location.replace('login.html'); 
+    window.location.replace('/Project1/client/login/login.html'); 
 }
 
 function getCurrentUserInfo() {
@@ -19,13 +19,10 @@ function getCurrentUserInfo() {
     })
     .then(resp => resp.json())
     .then(data => {
-        console.log(data);
-        // document.getElementById('users-name').innerText = data.username
         currentUser = data;
     })
     .catch(err => {
-        console.log(err);
-        window.location.replace('login.html'); 
+        window.location.replace('/Project1/client/login/login.html'); 
     })
 }
 

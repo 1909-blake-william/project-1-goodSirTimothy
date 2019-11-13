@@ -50,14 +50,18 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("test");
-		if ("/Project1/auth/session-user".equals(req.getRequestURI())) {
-			ObjectMapper om = new ObjectMapper();
-			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
-			System.out.println(json);
-			resp.getWriter().write(json);
+		ObjectMapper om = new ObjectMapper();
+		String json = om.writeValueAsString(req.getSession().getAttribute("user"));
+		if("null".equals(json) || null == json) {
+			System.out.println("Failed doGet request, because json is: " + json);
+			resp.setStatus(401); // Unauthorized status code
 		} else {
-			System.out.println("failed");
+			if ("/Project1/auth/session-user".equals(req.getRequestURI())) {
+				System.out.println("returning user information.");
+				resp.getWriter().write(json);
+			} else {
+				System.out.println("Failed for unknown reason");
+			}
 		}
 	}
 }
