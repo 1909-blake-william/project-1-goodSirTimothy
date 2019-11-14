@@ -38,7 +38,7 @@ public interface ReimbursementDao {
 	 * @param typeId
 	 * @return
 	 */
-	boolean postReimbursementToDataBase(int amount, Timestamp submitted, String description, int author,  int statusId, int typeId);
+	boolean postReimbursementToDataBase(int amount, String description, int author,  int statusId, int typeId);
 	
 	
 }

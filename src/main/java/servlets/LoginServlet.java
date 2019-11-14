@@ -15,7 +15,8 @@ import models.User;
 public class LoginServlet extends HttpServlet {
 
 	UserDao userDao = UserDao.currentUser;
-
+	ObjectMapper om = new ObjectMapper();
+	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		super.service(req, resp);
@@ -30,9 +31,7 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// System.out.println("uri = " + req.getRequestURI());
 		if ("/Project1/auth/login".equals(req.getRequestURI())) {
-			ObjectMapper om = new ObjectMapper();
 			User credentials = (User) om.readValue(req.getReader(), User.class);
 			User loggedInUser = userDao.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
 			if (loggedInUser == null) {

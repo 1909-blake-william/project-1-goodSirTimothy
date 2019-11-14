@@ -9,16 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dao.ReimbursementDaoImpl;
 import dao.UserDao;
+import models.Reimbursement;
 import models.User;
 
 public class ReimbursementServlet extends HttpServlet{
 	
 	UserDao userDao = UserDao.currentUser;
+	ObjectMapper om = new ObjectMapper();
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.service(req, resp);
 
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
@@ -31,7 +33,27 @@ public class ReimbursementServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("request recived with uri: " + req.getRequestURI());
-		resp.getWriter().write("Hello from Reimbursements servlet");
+		ReimbursementDaoImpl rDao = new ReimbursementDaoImpl();
+		rDao.getReimbursementsById(0);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ReimbursementDaoImpl rDao = new ReimbursementDaoImpl();
+		rDao.getReimbursementsById(0);
+//		if ("/Project1/auth/login".equals(req.getRequestURI())) {
+//			Reimbursement credentials = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+//			Reimbursement loggedInUser = userDao.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
+//			if (loggedInUser == null) {
+//				resp.setStatus(401); // Unauthorized status code
+//				return;
+//			} else {
+//				System.out.println(loggedInUser);
+//				resp.setStatus(201);
+//				req.getSession().setAttribute("user", loggedInUser);
+//				resp.getWriter().write(om.writeValueAsString(loggedInUser));
+//				return;
+//			}
+//		}
 	}
 }
