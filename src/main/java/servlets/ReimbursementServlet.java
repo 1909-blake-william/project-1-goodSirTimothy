@@ -16,8 +16,7 @@ import models.Reimbursement;
 import models.User;
 
 public class ReimbursementServlet extends HttpServlet{
-	
-	UserDao userDao = UserDao.currentUser;
+
 	ReimbursementDao reimbDao = ReimbursementDao.currentImplementation;
 	ObjectMapper om = new ObjectMapper();
 	
@@ -35,14 +34,12 @@ public class ReimbursementServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ReimbursementDaoImpl rDao = new ReimbursementDaoImpl();
-		rDao.getReimbursementsById(0);
+		
+		reimbDao.getReimbursementsById(0);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ReimbursementDaoImpl rDao = new ReimbursementDaoImpl();
-		rDao.getReimbursementsById(0);
 		Reimbursement credentials = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
 		System.out.println(credentials); 
 		boolean result = reimbDao.postReimbursementToDataBase(credentials.getAmount(), credentials.getDescription(), 
@@ -55,20 +52,5 @@ public class ReimbursementServlet extends HttpServlet{
 			resp.setStatus(201);
 			return;
 		}
-		
-//		if ("/Project1/auth/login".equals(req.getRequestURI())) {
-//			
-//			Reimbursement loggedInUser = userDao.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
-//			if (loggedInUser == null) {
-//				resp.setStatus(401); // Unauthorized status code
-//				return;
-//			} else {
-//				System.out.println(loggedInUser);
-//				resp.setStatus(201);
-//				req.getSession().setAttribute("user", loggedInUser);
-//				resp.getWriter().write(om.writeValueAsString(loggedInUser));
-//				return;
-//			}
-//		}
 	}
 }

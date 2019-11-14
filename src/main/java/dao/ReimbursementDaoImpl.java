@@ -31,9 +31,10 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	public List<Reimbursement> getReimbursementsById(int userId) {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		try (Connection conn = connectionUtil.getConnection()) {
-			String sql = "SELECT * FROM ers_reimbursment";
+			String sql = "SELECT * FROM ers_reimbursment where REIMB_AUTHOR = ?";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -60,10 +61,20 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		try (Connection conn = connectionUtil.getConnection()) {
 			String sql = "INSERT INTO ers_reimbursment(REIMB_ID, REIMB_AMOUNT, REIMB_SUBMITTED, " + 
 					"REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID,REIMB_TYPE_ID) " + 
-					"VALUES (REIMB_ID_SEQ.nextval, ?, CURRENT_TIMESTAMP, null, ?, ?, null, ?, ?);";
+					"VALUES (REIMB_ID_SEQ.nextval, ?, CURRENT_TIMESTAMP, null, ?, ?, null, ?, ?)";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, amount);
+			ps.setString(2, description);
+			ps.setInt(3, author);
+			ps.setInt(4, statusId);
+			ps.setInt(5, typeId);
 			
+			int result = ps.executeUpdate();
+			
+			if(result == 1) {
+				return true;
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
