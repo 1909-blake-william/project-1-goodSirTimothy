@@ -6,6 +6,7 @@ import java.util.List;
 import models.Reimbursement;
 
 public interface ReimbursementDao {
+	ReimbursementDao currentImplementation = new ReimbursementDaoImpl();
 	/************************************************
 	 * 	User get requests							*
 	 ***********************************************/

@@ -2,37 +2,42 @@ function submitNewReimbursement(){
     let amount = document.getElementById('amount').value;
     let description = document.getElementById('description').value;
     let typeSelect = document.getElementById('typeSelect').value;
+    let type;
+    if(typeSelect === 'Lodging'){
+        typeId = 1;
+    } else if(typeSelect === 'Travel'){
+        typeId = 2;
+    } else if(typeSelect === 'Food'){
+        typeId = 3;
+    } else if(typeSelect === 'Other'){
+        typeId = 4;
+    }
 
     reimbursement = {
         amount,
         description,
-        typeSelect
+        author: currentUser.userId,
+        statusId: 1,
+        typeId
     }
 
-    console.log(amount);
-    console.log(description);
-    console.log(typeSelect);
+    console.log(reimbursement);
 
     fetch('http://localhost:8080/Project1/reimbursements', {
-        // credentials: 'include',
-        method: 'POST'
-        // body: JSON.stringify(reimbursement),
-        // headers: {
-        //     'content-type': 'application/json'
-        // }
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify(reimbursement),
+        headers: {
+            'content-type': 'application/json'
+        }
     })
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
+    .then(res => {
+        console.log(res.status);
     })
-    .catch(err => console.log(err));
-    
-    console.log("trying to fetch")
 }
 
 
 function getCurrentUserInfo() {
-    console.log("not done checking")
     fetch('http://localhost:8080/Project1/auth/session-user', {
         credentials: 'include'
     })
@@ -44,7 +49,6 @@ function getCurrentUserInfo() {
     .catch(err => {
         window.location.replace('/Project1/client/login/login.html'); 
     })
-    console.log("done checking")
 }
 
 getCurrentUserInfo();

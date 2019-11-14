@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dao.ReimbursementDao;
 import dao.ReimbursementDaoImpl;
 import dao.UserDao;
 import models.Reimbursement;
@@ -17,6 +18,7 @@ import models.User;
 public class ReimbursementServlet extends HttpServlet{
 	
 	UserDao userDao = UserDao.currentUser;
+	ReimbursementDao reimbDao = ReimbursementDao.currentImplementation;
 	ObjectMapper om = new ObjectMapper();
 	
 	@Override
@@ -41,8 +43,21 @@ public class ReimbursementServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ReimbursementDaoImpl rDao = new ReimbursementDaoImpl();
 		rDao.getReimbursementsById(0);
+		Reimbursement credentials = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+		System.out.println(credentials); 
+		boolean result = reimbDao.postReimbursementToDataBase(credentials.getAmount(), credentials.getDescription(), 
+				credentials.getAuthor(), credentials.getStatusId(), credentials.getTypeId());
+		System.out.println("The Insert Results = " + result);
+		if (result == false) {
+			resp.setStatus(401); // Unauthorized status code
+			return;
+		} else {
+			resp.setStatus(201);
+			return;
+		}
+		
 //		if ("/Project1/auth/login".equals(req.getRequestURI())) {
-//			Reimbursement credentials = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+//			
 //			Reimbursement loggedInUser = userDao.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword());
 //			if (loggedInUser == null) {
 //				resp.setStatus(401); // Unauthorized status code
