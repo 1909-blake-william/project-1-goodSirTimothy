@@ -63,6 +63,6 @@ public interface ReimbursementDao {
 	 */
 	List<Reimbursement> adminGetReimbursementsByStatus(int statusId);
 	
-	boolean adminUpdate(int userId, int statusId);
+	boolean adminUpdate(int userId, int statusId, int reimbId);
 	
 }

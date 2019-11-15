@@ -42,12 +42,11 @@ public class ReimbursementServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		User user = userDao.currentUser();
-		System.out.println(user);
 		if ("EMPLOYEE".contentEquals(user.getRole())) {
 			List<Reimbursement> reimbursements = reimbDao.getReimbursementsById(user.getUserId());
 			String json = om.writeValueAsString(reimbursements);
 			resp.getWriter().write(json);
-		} else if ("MANAGER".contentEquals(user.getRole())){
+		} else if ("MANAGER".contentEquals(user.getRole())) {
 			List<Reimbursement> reimbursements = reimbDao.adminGetReimbursements();
 			String json = om.writeValueAsString(reimbursements);
 			resp.getWriter().write(json);
@@ -56,11 +55,19 @@ public class ReimbursementServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Reimbursement reimbursement = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
-		System.out.println(reimbursement);
-		boolean result = reimbDao.postReimbursementToDataBase(reimbursement.getAmount(), reimbursement.getDescription(),
-				reimbursement.getAuthor(), reimbursement.getStatusId(), reimbursement.getTypeId());
-		System.out.println("The Insert Results = " + result);
+		boolean result = false;
+		if ("/Project1/reimbursements/update".equals(req.getRequestURI())) {
+			User user = userDao.currentUser();
+			int reimbId = Integer.parseInt(req.getParameter("reimbId"));
+			int statusId = Integer.parseInt(req.getParameter("status"));
+			result = reimbDao.adminUpdate(user.getUserId(), statusId, reimbId);
+		} else {
+			Reimbursement reimbursement = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+			System.out.println(reimbursement);
+			result = reimbDao.postReimbursementToDataBase(reimbursement.getAmount(), reimbursement.getDescription(),
+					reimbursement.getAuthor(), reimbursement.getStatusId(), reimbursement.getTypeId());
+			System.out.println("The Insert Results = " + result);
+		}
 		if (result == false) {
 			resp.setStatus(401); // Unauthorized status code
 			return;

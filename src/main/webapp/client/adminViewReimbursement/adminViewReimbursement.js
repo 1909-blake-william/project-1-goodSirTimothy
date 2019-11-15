@@ -1,10 +1,33 @@
 let currentUser = undefined;
 
-function denied(){
-    alert('denied');
+function approved(n){
+    fetch(`http://localhost:8080/Project1/reimbursements/update?reimbId=${n}&status=2`, {
+        credentials: 'include',
+        method: 'POST'
+    })
+    .then(res => {
+        if(res.status === 201){
+            reloadTables();
+        } else {
+            alert('Something Went Wrong')
+        }
+    })
+    .catch(err => console.log(err));
 }
-function approved(){
-    alert('approved')
+
+function denied(n){
+    fetch(`http://localhost:8080/Project1/reimbursements/update?reimbId=${n}&status=3`, {
+        credentials: 'include',
+        method: 'POST'
+    })
+    .then(res => {
+        if(res.status === 201){
+            reloadTables();
+        } else {
+            alert('Something Went Wrong')
+        }
+    })
+    .catch(err => console.log(err));
 }
 
 function logout(){
@@ -34,12 +57,16 @@ function getCurrentUserInfo() {
 
 getCurrentUserInfo();
 
+function reloadTables(){
+    document.getElementById('reimbursement-table-body').innerText = "";
+    readFromServlet();
+}
+
 function readFromServlet() {
     fetch('http://localhost:8080/Project1/reimbursements')
         .then(res => res.json())
         .then(data => {
             reimbursementToTable(data);
-            console.log(data);
         })
         .catch(err => console.log(err));
 }
@@ -48,11 +75,6 @@ function reimbursementToTable(reimbursement) {
     reimbursement.forEach(r => {
         // create the row element
         const row = document.createElement('tr');
-
-        // // create all the td elements and append them to the row
-        // const idData = document.createElement('td');
-        // idData.innerText = r.id;
-        // row.appendChild(idData);
 
         const amountData = document.createElement('td');
         amountData.innerText = r.amount;
@@ -86,7 +108,8 @@ function reimbursementToTable(reimbursement) {
 
         const statusIdData = document.createElement('td');
         if(r.statusId === 1){
-            statusIdData.innerHTML = `<button class="btn btn-lg btn-primary" type="button" onclick="approved()">Approved</button> <button class="btn btn-lg btn-primary" type="button" onclick="denied()">Denied</button>`;
+            statusIdData.innerHTML = `<button class="btn btn-lg btn-primary" type="button" onclick="approved(${r.id})">Approved</button> 
+            <button class="btn btn-lg btn-primary" type="button" onclick="denied(${r.id})">Denied</button>`;
         } else if(r.statusId === 2){
             statusIdData.innerText = 'Approved';
         } else if (r.statusId == 3){

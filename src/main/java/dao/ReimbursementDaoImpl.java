@@ -178,9 +178,19 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	}
 
 	@Override
-	public boolean adminUpdate(int userId, int statusId) {
+	public boolean adminUpdate(int userId, int statusId, int reimbId) {
 		try(Connection conn = connectionUtil.getConnection()){
+			String sql = "UPDATE ers_reimbursment SET reimb_resolved = CURRENT_TIMESTAMP, reimb_resolver = ?, reimb_status_id = ? WHERE reimb_id = ?";
 			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ps.setInt(2, statusId);
+			ps.setInt(3, reimbId);
+			
+			int result = ps.executeUpdate();
+			if(result == 1) {
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
