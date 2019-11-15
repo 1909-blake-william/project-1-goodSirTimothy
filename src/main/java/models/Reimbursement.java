@@ -2,6 +2,18 @@ package models;
 
 import java.sql.Timestamp;
 
+/**
+ * This model is designed after the Database table for Project_1 assignment. 
+ * Main columns: id, amount, submitted, resolved, description, author, resolver, statusId, typeId.
+ * Extra variables are also placed in this model to provide an easier time manipulating data.
+ * @author Tim Clifton
+ *
+ * @implNote 
+	String status, is for holding the string value for the status of reimbursement: pending, approved, denied. 
+	String type, is for holding the string for what type of reimbursement: Lodging, Food, Travel, Other. 
+	String autherName, is for holding the full name for the person that made the reimbursement. 
+	String resolverName, is for holding the full name for the person that either approved/denied reimbursement. 
+ */
 public class Reimbursement {
 	// Columns from the Database table
 	private int id;
@@ -16,7 +28,9 @@ public class Reimbursement {
 	// Columns gotten with a join
 	private String status;
 	private String type;
-	
+	private String autherName;
+	private String resolverName;
+
 	public Reimbursement() {
 		super();
 	}
@@ -164,17 +178,36 @@ public class Reimbursement {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String getAutherName() {
+		return autherName;
+	}
+
+	public void setAutherName(String autherName) {
+		this.autherName = autherName;
+	}
+
+	public String getResolverName() {
+		return resolverName;
+	}
+
+	public void setResolverName(String resolverName) {
+		this.resolverName = resolverName;
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + amount;
+		result = prime * result + ((autherName == null) ? 0 : autherName.hashCode());
 		result = prime * result + author;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((resolved == null) ? 0 : resolved.hashCode());
 		result = prime * result + resolver;
+		result = prime * result + ((resolverName == null) ? 0 : resolverName.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + statusId;
 		result = prime * result + ((submitted == null) ? 0 : submitted.hashCode());
@@ -194,6 +227,11 @@ public class Reimbursement {
 		Reimbursement other = (Reimbursement) obj;
 		if (amount != other.amount)
 			return false;
+		if (autherName == null) {
+			if (other.autherName != null)
+				return false;
+		} else if (!autherName.equals(other.autherName))
+			return false;
 		if (author != other.author)
 			return false;
 		if (description == null) {
@@ -209,6 +247,11 @@ public class Reimbursement {
 		} else if (!resolved.equals(other.resolved))
 			return false;
 		if (resolver != other.resolver)
+			return false;
+		if (resolverName == null) {
+			if (other.resolverName != null)
+				return false;
+		} else if (!resolverName.equals(other.resolverName))
 			return false;
 		if (status == null) {
 			if (other.status != null)
@@ -236,9 +279,7 @@ public class Reimbursement {
 	public String toString() {
 		return "Reimbursement [id=" + id + ", amount=" + amount + ", submitted=" + submitted + ", resolved=" + resolved
 				+ ", description=" + description + ", author=" + author + ", resolver=" + resolver + ", statusId="
-				+ statusId + ", typeId=" + typeId + ", status=" + status + ", type=" + type + "]";
+				+ statusId + ", typeId=" + typeId + ", status=" + status + ", type=" + type + ", autherName="
+				+ autherName + ", resolverName=" + resolverName + "]";
 	}
-	
-	
-	
 }

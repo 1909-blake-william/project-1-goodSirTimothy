@@ -16,6 +16,11 @@ import dao.UserDao;
 import models.Reimbursement;
 import models.User;
 
+/**
+ * 
+ * @author Tim Clifton
+ *
+ */
 public class ReimbursementServlet extends HttpServlet {
 
 	ReimbursementDao reimbDao = ReimbursementDao.currentImplementation;
@@ -40,11 +45,12 @@ public class ReimbursementServlet extends HttpServlet {
 		System.out.println(user);
 		if ("EMPLOYEE".contentEquals(user.getRole())) {
 			List<Reimbursement> reimbursements = reimbDao.getReimbursementsById(user.getUserId());
-			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(reimbursements);
 			resp.getWriter().write(json);
 		} else if ("MANAGER".contentEquals(user.getRole())){
-			
+			List<Reimbursement> reimbursements = reimbDao.adminGetReimbursements();
+			String json = om.writeValueAsString(reimbursements);
+			resp.getWriter().write(json);
 		}
 	}
 

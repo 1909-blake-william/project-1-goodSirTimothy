@@ -12,6 +12,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.UserDao;
 import models.User;
 
+/**
+ * 
+ * @author Tim Clifton
+ *
+ */
 public class LoginServlet extends HttpServlet {
 
 	UserDao userDao = UserDao.currentUser;

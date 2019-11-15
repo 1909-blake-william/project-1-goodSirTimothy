@@ -11,6 +11,11 @@ import java.util.List;
 import models.Reimbursement;
 import utils.connectionUtil;
 
+/**
+ * 
+ * @author Tim Clifton
+ *
+ */
 public class ReimbursementDaoImpl implements ReimbursementDao {
 	
 	private Reimbursement extractTable(ResultSet rs) throws SQLException {
@@ -25,6 +30,32 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		int typeId = rs.getInt("reimb_type_id");
 		return new Reimbursement(id, amount, submitted, resolved, description, author, resolver,
 				statusId, typeId);
+	}
+	
+	private boolean pullFullName(Reimbursement r, boolean author) {
+		try (Connection conn = connectionUtil.getConnection()) {
+			String sql = "SELECT user_first_name, user_last_name FROM ers_users WHERE ers_users_id = ?";
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			if(author) {
+			ps.setInt(1, r.getAuthor());
+			} else {
+				ps.setInt(1, r.getResolver());
+			}
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if (author){
+				r.setAutherName(rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
+				} else {
+					r.setResolverName(rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
+				}
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -41,7 +72,8 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 				reimbursements.add(extractTable(rs));
 			}
 			for (Reimbursement r : reimbursements) {
-				System.out.println(r);
+				pullFullName(r, true);
+				pullFullName(r, false);
 			}
 			return reimbursements;
 		} catch (SQLException e) {
@@ -65,11 +97,11 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 				reimbursements.add(extractTable(rs));
 			}
 			for (Reimbursement r : reimbursements) {
-				System.out.println(r);
+				pullFullName(r, true);
+				pullFullName(r, false);
 			}
 			return reimbursements;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -101,15 +133,22 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public List<Reimbursement> adminGetReimbursements() {
-		List<Reimbursement> reimbursements;
+		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		try (Connection conn = connectionUtil.getConnection()){
 			String sql = "SELECT * FROM ers_reimbursment ORDER BY reimb_id desc";
-			
+
 			PreparedStatement ps = conn.prepareStatement(sql);
-			
+
 			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				reimbursements.add(extractTable(rs));
+			}
+			for (Reimbursement r : reimbursements) {
+				pullFullName(r, true);
+				pullFullName(r, false);
+			}
+			return reimbursements;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -117,12 +156,22 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public List<Reimbursement> adminGetReimbursementsByStatus(int statusId) {
-		List<Reimbursement> reimbursements;
+		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		try (Connection conn = connectionUtil.getConnection()){
-			String sql = "SELECT * FROM ers_reimbursment WHERE reimb_status_id = ? ORDER BY reimb_id desc";
-			
+			String sql = "SELECT * FROM ers_reimbursment ORDER BY reimb_id desc";
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				reimbursements.add(extractTable(rs));
+			}
+			for (Reimbursement r : reimbursements) {
+				pullFullName(r, true);
+				pullFullName(r, false);
+			}
+			return reimbursements;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -130,7 +179,11 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public boolean adminUpdate(int userId, int statusId) {
-		// TODO Auto-generated method stub
+		try(Connection conn = connectionUtil.getConnection()){
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

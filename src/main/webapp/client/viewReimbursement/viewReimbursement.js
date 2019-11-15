@@ -9,8 +9,23 @@ function readFromServlet() {
         .catch(err => console.log(err));
 }
 
-function reimbursementToTable(reimbursement) {
+function getCurrentUserInfo() {
+    fetch('http://localhost:8080/Project1/auth/session-user', {
+        credentials: 'include'
+    })
+        .then(resp => resp.json())
+        .then(data => {
+            currentUser = data;
+            readFromServlet();
+        })
+        .catch(err => {
+            window.location.replace('/Project1/client/login/login.html');
+        })
+}
 
+getCurrentUserInfo();
+
+function reimbursementToTable(reimbursement) {
     reimbursement.forEach(r => {
         // create the row element
         const row = document.createElement('tr');
@@ -44,39 +59,37 @@ function reimbursementToTable(reimbursement) {
         row.appendChild(descriptionData);
 
         const authorData = document.createElement('td');
-        authorData.innerText = r.author;
+        authorData.innerText = r.autherName;
         row.appendChild(authorData);
 
         const resolverData = document.createElement('td');
-        resolverData.innerText = r.resolver;
+        resolverData.innerText = r.resolverName;
         row.appendChild(resolverData);
 
         const statusIdData = document.createElement('td');
-        statusIdData.innerText = r.statusId;
+        if(r.statusId === 1){
+            statusIdData.innerText = 'Pending';
+        } else if(r.statusId === 2){
+            statusIdData.innerText = 'Approved';
+        } else if (r.statusId == 3){
+            statusIdData.innerText = 'Denied';
+        }
         row.appendChild(statusIdData);
 
         const typeIdData = document.createElement('td');
-        typeIdData.innerText = r.typeId;
+        if(r.typeId === 1){
+            typeIdData.innerText = 'Lodging';
+        } else if (r.typeId === 2){
+            typeIdData.innerText = 'Travel';
+        } else if (r.typeId === 3){
+            typeIdData.innerText = 'Food';
+        } else if (r.typeId === 4){
+            typeIdData.innerText = 'Other';
+        }
+        // typeIdData.innerText = r.typeId;
         row.appendChild(typeIdData);
 
         // append the row into the table
         document.getElementById('reimbursement-table-body').appendChild(row);
-
     });
 }
-
-function getCurrentUserInfo() {
-    fetch('http://localhost:8080/Project1/auth/session-user', {
-        credentials: 'include'
-    })
-        .then(resp => resp.json())
-        .then(data => {
-            currentUser = data;
-            readFromServlet();
-        })
-        .catch(err => {
-            window.location.replace('/Project1/client/login/login.html');
-        })
-}
-
-getCurrentUserInfo();
