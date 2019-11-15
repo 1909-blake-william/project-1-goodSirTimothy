@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import models.Reimbursement;
@@ -17,7 +18,8 @@ import utils.connectionUtil;
  *
  */
 public class ReimbursementDaoImpl implements ReimbursementDao {
-	
+	HashMap<Integer, String> mapOfNames = new HashMap<>();
+
 	private Reimbursement extractTable(ResultSet rs) throws SQLException {
 		int id = rs.getInt("reimb_id");
 		int amount = rs.getInt("reimb_amount");
@@ -28,27 +30,39 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		int resolver = rs.getInt("reimb_resolver");
 		int statusId = rs.getInt("reimb_status_id");
 		int typeId = rs.getInt("reimb_type_id");
-		return new Reimbursement(id, amount, submitted, resolved, description, author, resolver,
-				statusId, typeId);
+		return new Reimbursement(id, amount, submitted, resolved, description, author, resolver, statusId, typeId);
 	}
-	
+
 	private boolean pullFullName(Reimbursement r, boolean author) {
+		if (author) {
+			if (mapOfNames.containsKey(r.getAuthor())) {
+				r.setAutherName(mapOfNames.get(r.getAuthor()));
+				return true;
+			}
+		} else {
+			if (mapOfNames.containsKey(r.getResolver())) {
+				r.setResolverName(mapOfNames.get(r.getResolver()));
+				return true;
+			}
+		}
 		try (Connection conn = connectionUtil.getConnection()) {
 			String sql = "SELECT user_first_name, user_last_name FROM ers_users WHERE ers_users_id = ?";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
-			if(author) {
-			ps.setInt(1, r.getAuthor());
+			if (author) {
+				ps.setInt(1, r.getAuthor());
 			} else {
 				ps.setInt(1, r.getResolver());
 			}
 
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				if (author){
-				r.setAutherName(rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
+				if (author) {
+					r.setAutherName(rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
+					mapOfNames.put(r.getAuthor(), rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
 				} else {
 					r.setResolverName(rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
+					mapOfNames.put(r.getResolver(), rs.getString("user_first_name") + "," + rs.getString("user_last_name"));
 				}
 				return true;
 			}
@@ -110,19 +124,19 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	@Override
 	public boolean postReimbursementToDataBase(int amount, String description, int author, int statusId, int typeId) {
 		try (Connection conn = connectionUtil.getConnection()) {
-			String sql = "INSERT INTO ers_reimbursment(REIMB_ID, REIMB_AMOUNT, REIMB_SUBMITTED, " + 
-					"REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID, REIMB_TYPE_ID) " + 
-					"VALUES (REIMB_ID_SEQ.nextval, ?, CURRENT_TIMESTAMP, null, ?, ?, null, ?, ?)";
+			String sql = "INSERT INTO ers_reimbursment(REIMB_ID, REIMB_AMOUNT, REIMB_SUBMITTED, "
+					+ "REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID, REIMB_TYPE_ID) "
+					+ "VALUES (REIMB_ID_SEQ.nextval, ?, CURRENT_TIMESTAMP, null, ?, ?, null, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, amount);
 			ps.setString(2, description);
 			ps.setInt(3, author);
 			ps.setInt(4, statusId);
 			ps.setInt(5, typeId);
-			
+
 			int result = ps.executeUpdate();
-			
-			if(result == 1) {
+
+			if (result == 1) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -134,7 +148,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	@Override
 	public List<Reimbursement> adminGetReimbursements() {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
-		try (Connection conn = connectionUtil.getConnection()){
+		try (Connection conn = connectionUtil.getConnection()) {
 			String sql = "SELECT * FROM ers_reimbursment ORDER BY reimb_id desc";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -157,7 +171,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	@Override
 	public List<Reimbursement> adminGetReimbursementsByStatus(int statusId) {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
-		try (Connection conn = connectionUtil.getConnection()){
+		try (Connection conn = connectionUtil.getConnection()) {
 			String sql = "SELECT * FROM ers_reimbursment ORDER BY reimb_id desc";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -179,16 +193,16 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public boolean adminUpdate(int userId, int statusId, int reimbId) {
-		try(Connection conn = connectionUtil.getConnection()){
+		try (Connection conn = connectionUtil.getConnection()) {
 			String sql = "UPDATE ers_reimbursment SET reimb_resolved = CURRENT_TIMESTAMP, reimb_resolver = ?, reimb_status_id = ? WHERE reimb_id = ?";
-			
+
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
 			ps.setInt(2, statusId);
 			ps.setInt(3, reimbId);
-			
+
 			int result = ps.executeUpdate();
-			if(result == 1) {
+			if (result == 1) {
 				return true;
 			}
 		} catch (SQLException e) {
