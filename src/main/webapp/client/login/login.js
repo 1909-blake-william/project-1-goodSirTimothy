@@ -19,7 +19,7 @@ function login(event){
             window.location.replace('/Project1/client/employee/employee.html');
         }
     })
-    .catch(err => console.log(err));
+    .catch(document.getElementById('error-id').innerText = 'An input field was left empty');
 }
 
 function getUserFromInputs(){

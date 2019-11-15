@@ -31,7 +31,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	public List<Reimbursement> getReimbursementsById(int userId) {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		try (Connection conn = connectionUtil.getConnection()) {
-			String sql = "SELECT * FROM ers_reimbursment where REIMB_AUTHOR = ?";
+			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ?";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
@@ -43,6 +43,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 			for (Reimbursement r : reimbursements) {
 				System.out.println(r);
 			}
+			return reimbursements;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,7 +53,25 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 
 	@Override
 	public List<Reimbursement> getReimbursementsByStatus(String status, int userId) {
-		// TODO Auto-generated method stub
+		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+		try (Connection conn = connectionUtil.getConnection()) {
+			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ? AND REIMB_STATUS_ID";
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				reimbursements.add(extractTable(rs));
+			}
+			for (Reimbursement r : reimbursements) {
+				System.out.println(r);
+			}
+			return reimbursements;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -60,7 +79,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	public boolean postReimbursementToDataBase(int amount, String description, int author, int statusId, int typeId) {
 		try (Connection conn = connectionUtil.getConnection()) {
 			String sql = "INSERT INTO ers_reimbursment(REIMB_ID, REIMB_AMOUNT, REIMB_SUBMITTED, " + 
-					"REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID,REIMB_TYPE_ID) " + 
+					"REIMB_RESOLVED, REIMB_DESCRIPTION, REIMB_AUTHOR, REIMB_RESOLVER, REIMB_STATUS_ID, REIMB_TYPE_ID) " + 
 					"VALUES (REIMB_ID_SEQ.nextval, ?, CURRENT_TIMESTAMP, null, ?, ?, null, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, amount);

@@ -15,27 +15,26 @@
 
 </head>
 
-<body>
 
-    <body class="text-center">
-        <form class="form-signin" >
-            <h1 class="h3 mb-3 font-weight-normal">Please input the information about your reimbursement</h1>
-            <label for="amount">amount</label>
-            <input type="number" id="amount" class="form-control" placeholder="amount" required autofocus>
-            <label for="description">description</label>
-            <input type="text" id="description" class="form-control" placeholder="description">
-            <div class="form-group">
-                <label for="typeSelect">Type of reimbursement</label>
-                <select class="form-control" id="typeSelect">
-                    <option>Lodging</option>
-                    <option>Travel</option>
-                    <option>Food</option>
-                    <option>Other</option>
-                </select>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitNewReimbursement()">Submit</button>
-        </form>
-    </body>
+<body class="text-center">
+    <form class="form-signin" onsubmit="submitNewReimbursement(event)">
+        <h1 class="h3 mb-3 font-weight-normal">Please input the information about your reimbursement</h1>
+        <label for="amount">amount</label>
+        <input type="number" id="amount" class="form-control" placeholder="amount" required autofocus>
+        <label for="description">description</label>
+        <input type="text" id="description" class="form-control" placeholder="description">
+        <div class="form-group">
+            <label for="typeSelect">Type of reimbursement</label>
+            <select class="form-control" id="typeSelect">
+                <option>Lodging</option>
+                <option>Travel</option>
+                <option>Food</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="back()">back</button>
+    </form>
 </body>
 
 <script src="newReimbursement.js"></script>
