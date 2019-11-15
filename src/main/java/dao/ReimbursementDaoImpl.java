@@ -31,7 +31,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	public List<Reimbursement> getReimbursementsById(int userId) {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		try (Connection conn = connectionUtil.getConnection()) {
-			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ?";
+			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ? ORDER BY reimb_id desc";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
@@ -55,7 +55,7 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 	public List<Reimbursement> getReimbursementsByStatus(String status, int userId) {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		try (Connection conn = connectionUtil.getConnection()) {
-			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ? AND REIMB_STATUS_ID";
+			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ? AND REIMB_STATUS_ID = ? ORDER BY reimb_id desc";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
@@ -96,6 +96,41 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
+	}
+
+	@Override
+	public List<Reimbursement> adminGetReimbursements() {
+		List<Reimbursement> reimbursements;
+		try (Connection conn = connectionUtil.getConnection()){
+			String sql = "SELECT * FROM ers_reimbursment ORDER BY reimb_id desc";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Reimbursement> adminGetReimbursementsByStatus(int statusId) {
+		List<Reimbursement> reimbursements;
+		try (Connection conn = connectionUtil.getConnection()){
+			String sql = "SELECT * FROM ers_reimbursment WHERE reimb_status_id = ? ORDER BY reimb_id desc";
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean adminUpdate(int userId, int statusId) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

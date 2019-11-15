@@ -14,12 +14,13 @@ function login(event){
     .then(data => {
         console.log(data);
         if(data.role === 'MANAGER'){
-            window.location.replace('/Project1/client/admin/admin.html');
+            window.location.replace('/Project1/client/adminViewReimbursement/adminViewReimbursement.html');
         } else {
             window.location.replace('/Project1/client/employee/employee.html');
         }
+        
     })
-    .catch(document.getElementById('error-id').innerText = 'An input field was left empty');
+    .catch(err => document.getElementById('error-id').innerText = 'Wrong username or password');
 }
 
 function getUserFromInputs(){

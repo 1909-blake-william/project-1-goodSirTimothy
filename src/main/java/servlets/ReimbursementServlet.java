@@ -50,10 +50,10 @@ public class ReimbursementServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Reimbursement credentials = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
-		System.out.println(credentials);
-		boolean result = reimbDao.postReimbursementToDataBase(credentials.getAmount(), credentials.getDescription(),
-				credentials.getAuthor(), credentials.getStatusId(), credentials.getTypeId());
+		Reimbursement reimbursement = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+		System.out.println(reimbursement);
+		boolean result = reimbDao.postReimbursementToDataBase(reimbursement.getAmount(), reimbursement.getDescription(),
+				reimbursement.getAuthor(), reimbursement.getStatusId(), reimbursement.getTypeId());
 		System.out.println("The Insert Results = " + result);
 		if (result == false) {
 			resp.setStatus(401); // Unauthorized status code

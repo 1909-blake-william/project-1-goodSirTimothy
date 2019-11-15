@@ -11,14 +11,14 @@ public interface ReimbursementDao {
 	 * 	User get requests							*
 	 ***********************************************/
 	/**
-	 * 
+	 * Get the reimbursements by the user ID
 	 * @param userId
 	 * @return
 	 */
 	List<Reimbursement> getReimbursementsById(int userId);
 	
 	/**
-	 * 
+	 * Get the reimbursements by the user ID and their status
 	 * @param status
 	 * @param userId
 	 * @return
@@ -30,16 +30,34 @@ public interface ReimbursementDao {
 	 * 	User post requests							*
 	 ***********************************************/
 	/**
-	 * 
-	 * @param amount
-	 * @param submitted
-	 * @param description
-	 * @param author
-	 * @param statusId
-	 * @param typeId
+	 * Post a new reimbursements request.
+	 * @param amount = the being requested for reimbursement 
+	 * @param submitted = the date the reimbursement was submitted
+	 * @param description = why the user needed a reimbursements
+	 * @param author = the user that submitted the reimbursement form
+	 * @param statusId = the status ID should be (1)
+	 * @param typeId = the type ID should be (1)
 	 * @return
 	 */
 	boolean postReimbursementToDataBase(int amount, String description, int author,  int statusId, int typeId);
 	
+
+	/************************************************
+	 * 	Admin get and update (post) requests		*
+	 ***********************************************/
+	/**
+	 * Get all reimbursements for the admin user
+	 * @return
+	 */
+	List<Reimbursement> adminGetReimbursements();
+	
+	/**
+	 * Get all reimbursements for the admin user and displays information based on their status
+	 * @param status = the status by number ID
+	 * @return
+	 */
+	List<Reimbursement> adminGetReimbursementsByStatus(int statusId);
+	
+	boolean adminUpdate(int userId, int statusId);
 	
 }

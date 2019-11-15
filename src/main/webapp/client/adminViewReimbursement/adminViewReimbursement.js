@@ -1,12 +1,6 @@
 let currentUser = undefined;
 
-function newReimbursement(){
-    window.location = ('/Project1/client/newReimbursement/newReimbursement.html');
-}
 
-function viewReimbursement(){
-    window.location = ('/Project1/client/viewReimbursement/viewReimbursement.html');
-}
 
 function logout(){
     fetch('http://localhost:8080/Project1/auth/logout', {

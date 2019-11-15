@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- override of style -->
+    <link rel="stylesheet" href="adminViewReimbursement.css">
+
+</head>
+
+<body>
+    <div>
+        <button class=" pull-right btn btn-lg btn-primary" type="button" onclick="logout()">logout</button>
+        <br>
+        <label for="typeSelect">Type of reimbursement: </label>
+        <select class="text-center" id="typeSelect">
+            <option>Date</option>
+            <option>Pending</option>
+            <option>Approved</option>
+            <option>Denied</option>
+        </select>
+    </div>
+    <div class="text-center">
+        <table class="table" id="reimbursement-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Submitted</th>
+                    <th scope="col">Resolved</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Resolver</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Type</th>
+                </tr>
+            </thead>
+            <tbody id="reimbursement-table-body"> </tbody>
+        </table>
+    </div>
+</body>
+
+<script src="adminViewReimbursement.js"></script>
+
+</html>

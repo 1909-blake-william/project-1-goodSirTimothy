@@ -49,6 +49,9 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if ("/Project1/auth/logout".equals(req.getRequestURI())) {
+			req.getSession().invalidate();
+		}
 		ObjectMapper om = new ObjectMapper();
 		String json = om.writeValueAsString(req.getSession().getAttribute("user"));
 		if("null".equals(json) || null == json) {

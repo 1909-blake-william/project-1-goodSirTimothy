@@ -15,10 +15,10 @@ function reimbursementToTable(reimbursement) {
         // create the row element
         const row = document.createElement('tr');
 
-        // create all the td elements and append them to the row
-        const idData = document.createElement('td');
-        idData.innerText = r.id;
-        row.appendChild(idData);
+        // // create all the td elements and append them to the row
+        // const idData = document.createElement('td');
+        // idData.innerText = r.id;
+        // row.appendChild(idData);
 
         const amountData = document.createElement('td');
         amountData.innerText = r.amount;
