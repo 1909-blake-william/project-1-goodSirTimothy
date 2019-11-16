@@ -1,8 +1,8 @@
-#reimbursement-table {
+/* #reimbursement-table {
     width: 75%;
     margin: auto;
     margin-top: 1em;
-}
+}*/
 
 #reimbursement-table tr:hover {
     cursor: pointer;

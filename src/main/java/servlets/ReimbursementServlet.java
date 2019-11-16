@@ -17,9 +17,9 @@ import models.Reimbursement;
 import models.User;
 
 /**
- * 
+ * Login servlet for handling all login requests.
  * @author Tim Clifton
- *
+ * @implNote url patter /reimbursements/*
  */
 public class ReimbursementServlet extends HttpServlet {
 

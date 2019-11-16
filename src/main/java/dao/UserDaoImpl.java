@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import models.User;
 import utils.connectionUtil;
 
+/**
+ * This class is for selecting a user from an SQL database
+ * @author Tim Clifton
+ * @implNote This implements the UserDao and places all needed logic in the methods
+ */
 public class UserDaoImpl implements UserDao{
 	User user;
 

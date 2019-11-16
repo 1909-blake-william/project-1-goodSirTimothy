@@ -6,29 +6,23 @@ import java.util.List;
 import models.Reimbursement;
 
 /**
- * 
+ * An interface for all Reimbursement methods that handle SQL queries
  * @author Tim Clifton
- *
+ * 
  */
 public interface ReimbursementDao {
+	
 	ReimbursementDao currentImplementation = new ReimbursementDaoImpl();
+	
 	/************************************************
 	 * 	User get requests							*
 	 ***********************************************/
 	/**
 	 * Get the reimbursements by the user ID
-	 * @param userId
-	 * @return
+	 * @param userId = the user ID of an employee (not a manager)
+	 * @return return the list reimbursements
 	 */
 	List<Reimbursement> getReimbursementsById(int userId);
-	
-	/**
-	 * Get the reimbursements by the user ID and their status
-	 * @param status
-	 * @param userId
-	 * @return
-	 */
-	List<Reimbursement> getReimbursementsByStatus(String status, int userId);
 	
 
 	/************************************************
@@ -42,7 +36,7 @@ public interface ReimbursementDao {
 	 * @param author = the user that submitted the reimbursement form
 	 * @param statusId = the status ID should be (1)
 	 * @param typeId = the type ID should be (1)
-	 * @return
+	 * @return true if updated, false if note updated
 	 */
 	boolean postReimbursementToDataBase(int amount, String description, int author,  int statusId, int typeId);
 	
@@ -52,17 +46,24 @@ public interface ReimbursementDao {
 	 ***********************************************/
 	/**
 	 * Get all reimbursements for the admin user
-	 * @return
+	 * @return return a list of reimbursements
 	 */
 	List<Reimbursement> adminGetReimbursements();
 	
 	/**
 	 * Get all reimbursements for the admin user and displays information based on their status
 	 * @param status = the status by number ID
-	 * @return
+	 * @return return the list reimbursements
 	 */
 	List<Reimbursement> adminGetReimbursementsByStatus(int statusId);
 	
+	/**
+	 * This is for updating a row in the database
+	 * @param userId = the userId of the admin
+	 * @param statusId = the status (2 if approved, 3 if denied)
+	 * @param reimbId = the id for the reimbursement that is being updated
+	 * @return true if updated, false if note updated
+	 */
 	boolean adminUpdate(int userId, int statusId, int reimbId);
 	
 }

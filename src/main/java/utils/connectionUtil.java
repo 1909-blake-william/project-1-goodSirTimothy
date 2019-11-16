@@ -5,16 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * 
+ * This is for getting the JDBC connection to the database
  * @author Tim Clifton
  *
  */
 public class connectionUtil {
+	/**
+	 * Load the jdbc driver
+	 */
 	static {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

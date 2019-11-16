@@ -33,7 +33,7 @@ function submitNewReimbursement(event) {
         })
         .then(res => {
             if (res.status === 201) {
-                window.location.replace('/Project1/client/employee/employee.html');
+                window.location = ('/Project1/client/employee/employee.html');
             } else {
                 document.getElementById('error-id').InnerText = 'Something went wrong with input...';
             }
@@ -41,7 +41,7 @@ function submitNewReimbursement(event) {
 }
 
 function back() {
-    window.location.replace('/Project1/client/employee/employee.html');
+    window.location = ('/Project1/client/employee/employee.html');
 }
 
 
@@ -55,7 +55,7 @@ function getCurrentUserInfo() {
             console.log(currentUser);
         })
         .catch(err => {
-            window.location.replace('/Project1/client/login/login.html');
+            window.location = ('/Project1/client/login/login.html');
         })
 }
 

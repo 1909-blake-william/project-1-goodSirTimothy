@@ -13,13 +13,19 @@ import models.Reimbursement;
 import utils.connectionUtil;
 
 /**
- * 
+ * This class is for submitting and selecting reimbursements from an SQL database
  * @author Tim Clifton
- *
+ * @implNote This implements the ReimbursementDao and places all needed logic in the methods
  */
 public class ReimbursementDaoImpl implements ReimbursementDao {
 	HashMap<Integer, String> mapOfNames = new HashMap<>();
 
+	/**
+	 * extract values for Database row and create a Reimbursement object with the values
+	 * @param rs the ResultSet
+	 * @return the Reimbursement Object
+	 * @throws SQLException This method throws because where this method is called, it already catches the SQLException
+	 */
 	private Reimbursement extractTable(ResultSet rs) throws SQLException {
 		int id = rs.getInt("reimb_id");
 		int amount = rs.getInt("reimb_amount");
@@ -33,6 +39,12 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 		return new Reimbursement(id, amount, submitted, resolved, description, author, resolver, statusId, typeId);
 	}
 
+	/**
+	 * pull the full name from the database based off the userId from Reimbursements
+	 * @param r = a single Reimbursement
+	 * @param author
+	 * @return boolean if the name was found
+	 */
 	private boolean pullFullName(Reimbursement r, boolean author) {
 		if (author) {
 			if (mapOfNames.containsKey(r.getAuthor())) {
@@ -92,30 +104,6 @@ public class ReimbursementDaoImpl implements ReimbursementDao {
 			return reimbursements;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Reimbursement> getReimbursementsByStatus(String status, int userId) {
-		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
-		try (Connection conn = connectionUtil.getConnection()) {
-			String sql = "SELECT * FROM ers_reimbursment WHERE REIMB_AUTHOR = ? AND REIMB_STATUS_ID = ? ORDER BY reimb_id desc";
-
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, userId);
-
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				reimbursements.add(extractTable(rs));
-			}
-			for (Reimbursement r : reimbursements) {
-				pullFullName(r, true);
-				pullFullName(r, false);
-			}
-			return reimbursements;
-		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

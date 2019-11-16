@@ -13,7 +13,7 @@ function logout(){
         credentials: 'include'
     })
     .then(res => {
-        window.location.replace('/Project1/client/login/login.html'); 
+        window.location = ('/Project1/client/login/login.html'); 
     })
     .catch(err => {
     })
@@ -28,7 +28,7 @@ function getCurrentUserInfo() {
         currentUser = data;
     })
     .catch(err => {
-        window.location.replace('/Project1/client/login/login.html'); 
+        window.location = ('/Project1/client/login/login.html'); 
     })
 }
 

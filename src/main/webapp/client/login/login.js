@@ -14,9 +14,9 @@ function login(event){
     .then(data => {
         console.log(data);
         if(data.role === 'MANAGER'){
-            window.location.replace('/Project1/client/adminViewReimbursement/adminViewReimbursement.html');
+            window.location = ('/Project1/client/adminViewReimbursement/adminViewReimbursement.html');
         } else {
-            window.location.replace('/Project1/client/employee/employee.html');
+            window.location = ('/Project1/client/employee/employee.html');
         }
         
     })

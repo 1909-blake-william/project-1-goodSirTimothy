@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * 
+ * @author 17017
+ *
+ */
 public class User {
 	private int userId;
 	private String username;
@@ -9,10 +14,23 @@ public class User {
 	private String email;
 	private String role;
 	
+	/**
+	 * default constructor
+	 */
 	public User() {
 		super();
 	}
 
+	/**
+	 * Constructor for for setting all values
+	 * @param userId
+	 * @param username
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param role
+	 */
 	public User(int userId, String username, String password, String firstName, String lastName, String email,
 			String role) {
 		super();

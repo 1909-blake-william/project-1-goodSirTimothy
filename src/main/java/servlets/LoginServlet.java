@@ -13,9 +13,9 @@ import dao.UserDao;
 import models.User;
 
 /**
- * 
+ * Login servlet for handling all login requests.
  * @author Tim Clifton
- *
+ * @implNote url patter /auth/*
  */
 public class LoginServlet extends HttpServlet {
 
