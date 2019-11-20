@@ -1,30 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  <display-name>Project1</display-name>
+  <display-name>ERSDemoTim</display-name>
+  <!-- Register Servlets -->
   <servlet>
-    <servlet-name>reimbursement</servlet-name>
-    <servlet-class>servlets.ReimbursementServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>user</servlet-name>
-    <servlet-class>servlets.UserServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>login</servlet-name>
-    <servlet-class>servlets.LoginServlet</servlet-class>
+    <description></description>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <servlet-class>revature.web.DispatcherServlet</servlet-class>
+    <!-- load servlet when the applciation starts -->
+    <load-on-startup>1</load-on-startup>
   </servlet>
   
-  
+  <!-- Setup mapping -->
   <servlet-mapping>
-    <servlet-name>reimbursement</servlet-name>
-  	<url-pattern>/reimbursements/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>user</servlet-name>
-  	<url-pattern>/users/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>login</servlet-name>
-  	<url-pattern>/auth/*</url-pattern>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
 </web-app>
